@@ -1,4 +1,4 @@
-# import the necessary packages
+
 import matplotlib.pyplot as plt
 from sklearn.datasets.samples_generator import make_blobs
 import numpy as np
@@ -6,19 +6,28 @@ import argparse
 
 
 def sigmoid_activation(x):
-    # compute and return the sigmoid activation value for a
-    # given input value
+    """
+    Computes and returns sigmoid activation function for given input
+    :param x:
+    :return:
+    """
     return 1.0 / (1 + np.exp(-x))
 
 
 def next_batch(X, y, batchSize):
-    # loop over our dataset `X` in mini-batches of size `batchSize`
+    """
+    Loops over a dataset and yields batches of data and target variables
+
+    :param X:
+    :param y:
+    :param batchSize:
+    :return:
+    """
     for i in np.arange(0, X.shape[0], batchSize):
-        # yield a tuple of the current batched data and labels
         yield (X[i:i + batchSize], y[i:i + batchSize])
 
 
-# construct the argument parse and parse the arguments
+# argument parser
 ap = argparse.ArgumentParser()
 ap.add_argument("-e", "--epochs", type=float, default=100,
                 help="# of epochs")
@@ -30,8 +39,13 @@ args = vars(ap.parse_args())
 
 # generate a 2-class classification problem with 400 data points,
 # where each data point is a 2D feature vector
-(X, y) = make_blobs(n_samples=400, n_features=2, centers=2,
-                    cluster_std=2.5, random_state=95)
+(X, y) = make_blobs(
+    n_samples=400,
+    n_features=2,
+    centers=2,
+    cluster_std=2.5,
+    random_state=95
+)
 
 # insert a column of 1's as the first entry in the feature
 # vector -- this is a little trick that allows us to treat
@@ -52,7 +66,7 @@ for epoch in np.arange(0, args["epochs"]):
     # initialize the total loss for the epoch
     epochLoss = []
 
-    # loop over our data in batches
+    # loop over batches
     for (batchX, batchY) in next_batch(X, y, args["batch_size"]):
         # take the dot product between our current batch of
         # features and weight matrix `W`, then pass this value
